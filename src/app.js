@@ -1,6 +1,11 @@
 const yargs = require("yargs");
 const { sequelize } = require("./db/connection");
-const { createMovie } = require("./movie/function");
+const {
+  createMovie,
+  readMovie,
+  updateMovie,
+  deleteMovie,
+} = require("./movie/function");
 
 async function app(yargsObject) {
   await sequelize.sync();
@@ -12,10 +17,14 @@ async function app(yargsObject) {
       director: yargsObject.director,
     });
   } else if (yargsObject.read) {
+    await readMovie();
     // read code goes here
   } else if (yargsObject.update) {
     // update code goes here
+    await updateMovie(yargsObject.updatedTitle, yargsObject.title);
   } else if (yargsObject.delete) {
+    await deleteMovie(yargsObject.title);
+    console.log("DELETED");
     // delete code goes here
   } else {
     console.log("Command not recognised");
